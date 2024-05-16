@@ -1,0 +1,16 @@
+{
+    "name": "Elixir",
+    "dockerComposeFile": ["../compose.yaml"],
+    "service": "elixir",
+    "workspaceFolder": "/home/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "EditorConfig.EditorConfig",
+                "mhutchie.git-graph",
+                "eamodio.gitlens",
+                "JakeBecker.elixir-ls"
+            ]
+        }
+    }
+}

@@ -1,0 +1,13 @@
+services:
+  elixir:
+    image: elixir:1.16
+    tty: true
+    volumes:
+      - .:/home/app:cached
+      - elixir_deps:/home/app/deps
+      - elixir_build:/home/app/_build
+    working_dir: /home/app
+
+volumes:
+  elixir_deps:
+  elixir_build:
