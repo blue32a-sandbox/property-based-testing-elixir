@@ -32,4 +32,38 @@ defmodule PbtTest do
       known_last == List.last(known_list)
     end
   end
+
+  property "ソート済みリストは整列したペアを持つ" do
+    forall list <- list(term()) do
+      is_orderd(Enum.sort(list))
+    end
+  end
+
+  def is_orderd([a, b | t]) do
+    a <= b and is_orderd([b | t])
+  end
+
+  def is_orderd(_) do
+    true
+  end
+
+  property "ソート済みリストはサイズを維持する" do
+    forall l <- list(number()) do
+      length(l) == length(Enum.sort(l))
+    end
+  end
+
+  property "何も要素が追加されなかった" do
+    forall l <- list(number()) do
+      sorted = Enum.sort(l)
+      Enum.all?(sorted, fn element -> element in l end)
+    end
+  end
+
+  property "何も要素が削除されなかった" do
+    forall l <- list(number()) do
+      sorted = Enum.sort(l)
+      Enum.all?(l, fn element -> element in sorted end)
+    end
+  end
 end
