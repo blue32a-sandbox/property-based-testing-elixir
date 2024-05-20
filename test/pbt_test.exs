@@ -66,4 +66,14 @@ defmodule PbtTest do
       Enum.all?(l, fn element -> element in sorted end)
     end
   end
+
+  property "対称的なエンコードとデコード" do
+    forall data <- list({atom(), any()}) do
+      encoded = encode(data)
+      is_binary(encoded) and data == decode(encoded)
+    end
+  end
+
+  def encode(t), do: :erlang.term_to_binary(t)
+  def decode(t), do: :erlang.binary_to_term(t)
 end
