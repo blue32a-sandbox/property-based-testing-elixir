@@ -14,6 +14,13 @@ defmodule PbtTest do
     end
   end
 
+  property "最後の数を選ぶ" do
+    forall {list, known_last} <- {list(number()), number()} do
+      known_list = list ++ [known_last]
+      known_last == List.last(known_list)
+    end
+  end
+
   def boolean(_) do
     true
   end
