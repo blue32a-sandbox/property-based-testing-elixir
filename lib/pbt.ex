@@ -1,18 +1,17 @@
 defmodule Pbt do
-  @moduledoc """
-  Documentation for `Pbt`.
-  """
+  def biggest([head | tail]) do
+    biggest(tail, head)
+  end
 
-  @doc """
-  Hello world.
+  defp biggest([], max) do
+    max
+  end
 
-  ## Examples
+  defp biggest([head | tail], max) when head >= max do
+    biggest(tail, head)
+  end
 
-      iex> Pbt.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  defp biggest([head | tail], max) when head < max do
+    biggest(tail, max)
   end
 end
