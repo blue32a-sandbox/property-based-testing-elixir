@@ -119,4 +119,22 @@ defmodule GeneratorsTest do
       :queue.from_list(list)
     end
   end
+
+  def non_empty(list_type) do
+    such_that l <- list_type, when: l != [] and l != <<>>
+  end
+
+  def non_empty_map(gen) do
+    such_that g <- gen, when: g != %{}
+  end
+
+  # def even(), do: such_that n <- integer(), when: rem(n, 2) == 0
+  # def uneven(), do: such_that n <- integer(), when: rem(n, 2) != 0
+  # 制約を変換に置き換える
+  def even() do
+    let n <- integer(), do: n * 2
+  end
+  def uneven() do
+    let n <- integer(), do: n * 2 + 1
+  end
 end
