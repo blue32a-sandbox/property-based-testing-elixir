@@ -137,4 +137,33 @@ defmodule GeneratorsTest do
   def uneven() do
     let n <- integer(), do: n * 2 + 1
   end
+
+  def text_like() do
+    let l <-
+        list(
+          frequency([
+            {80, range(?a, ?z)},
+            {10, ?\s},
+            {1, ?\n},
+            {1, oneof([?., ?-, ?!, ??, ?,])},
+            {1, range(?0, ?9)}
+          ])
+        ) do
+      to_string(l)
+    end
+  end
+
+  def mostly_sorted() do
+    gen = list(
+      frequency([
+        {5, sorted_list()},
+        {1, list()}
+      ])
+    )
+    let lists <- gen, do: Enum.concat(lists)
+  end
+
+  def sorted_list() do
+    let l <- list(), do: Enum.sort(l)
+  end
 end
