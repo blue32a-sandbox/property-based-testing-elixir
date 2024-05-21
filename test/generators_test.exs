@@ -100,4 +100,23 @@ defmodule GeneratorsTest do
       aggregate(true, name: name_len, bio: bio_len)
     end
   end
+
+  property "ナイーブなキューの生成" do
+    forall list <- list({term(), term()}) do
+      q = :queue.from_list(list)
+      :queue.is_queue(q)
+    end
+  end
+
+  property "letマクロを使ったキュー" do
+    forall q <- queue() do
+      :queue.is_queue(q)
+    end
+  end
+
+  def queue() do
+    let list <- list({term(), term()}) do
+      :queue.from_list(list)
+    end
+  end
 end
