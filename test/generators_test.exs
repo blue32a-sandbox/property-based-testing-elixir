@@ -71,4 +71,33 @@ defmodule GeneratorsTest do
     length(for <<c::utf8 <- str>>, is_punctuation.(c), do: 1)
   end
 
+  property "resize", [:verbose] do
+    forall bin <- resize(150, binary()) do
+      collect(is_binary(bin), to_range(10, byte_size(bin)))
+    end
+  end
+
+  property "profile 1", [:verbose] do
+    forall profile <- [
+             name: resize(10, utf8()),
+             age: pos_integer(),
+             bio: resize(350, utf8())
+           ] do
+      name_len = to_range(10, String.length(profile[:name]))
+      bio_len = to_range(300, String.length(profile[:bio]))
+      aggregate(true, name: name_len, bio: bio_len)
+    end
+  end
+
+  property "profile 2", [:verbose] do
+    forall profile <- [
+             name: utf8(),
+             age: pos_integer(),
+             bio: sized(s, resize(s * 35, utf8()))
+           ] do
+      name_len = to_range(10, String.length(profile[:name]))
+      bio_len = to_range(300, String.length(profile[:bio]))
+      aggregate(true, name: name_len, bio: bio_len)
+    end
+  end
 end
