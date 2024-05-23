@@ -166,4 +166,39 @@ defmodule GeneratorsTest do
   def sorted_list() do
     let l <- list(), do: Enum.sort(l)
   end
+
+  def path() do
+    sized(
+      size,
+      path(size, {0,0}, [], %{{0,0} => :seen}, [])
+    )
+  end
+
+  def path(0, _current, acc, _seen, _ignore) do
+    acc
+  end
+
+  def path(_max, _current, acc, _seen, [_,_,_,_]) do
+    acc
+  end
+
+  def path(max, current, acc, seen, ignore) do
+    increase_path(max, current, acc, seen, ignore)
+  end
+
+  def increase_path(max, current, acc, seen, ignore) do
+    let direction <- oneof([:left, :right, :up, :down] -- ignore) do
+      new_pos = move(direction, current)
+      case seen do
+        %{^new_pos => _} ->
+          path(max, current, acc, seen, [direction|ignore])
+        _ ->
+          path(max-1, new_pos, [direction|acc], Map.put(seen, new_pos, :seen), [])
+      end
+    end
+  end
+  def move(:left, {x, y}), do: {x-1, y}
+  def move(:right, {x, y}), do: {x+1, y}
+  def move(:up, {x, y}), do: {x, y+1}
+  def move(:down, {x, y}), do: {x, y-1}
 end
